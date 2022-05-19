@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <meta charset="utf-8" />
+    <title>First Game</title>
+</head>
+<body>
+
+<canvas id="canv"></canvas>
+
+
+<script type="module">
+  "use strict"
+import {getCanvas} from "./engine/scripts.js"
+import Constants from "./game/Constants.js"
+import Time from "./engine/Time.js"
+import Input from "./engine/Input.js"
+
+import Game from "./engine/Game.js"
+import MainScene from "./game/MainScene.js"
+import StartScene from "./game/StartScene.js"
+import GameOverScene from "./game/GameOverScene.js"
+import BossScene from "./game/BossScene.js"
+import SecondLevel from "./game/SecondLevel.js"
+
+Input.attach(document);
+
+let { canvas, ctx } = getCanvas();
+
+let FirstLevel = new MainScene();
+let startScene = new StartScene();
+let gameover = new GameOverScene();
+let boss = new BossScene();
+let secondlevel = new SecondLevel();
+Game.scenes.push(startScene);
+Game.scenes.push(FirstLevel);
+Game.scenes.push(secondlevel);
+Game.scenes.push(boss);
+Game.scenes.push(gameover);
+//Game.currentSceneIndex = 0;//Redundant
+Game.changeScene(0)
+
+  function tick()
+  {
+    Game.updateScene();
+    Input.update();
+    Game.scene().update(ctx);
+    Game.scene().draw(ctx);
+    Game.scene().remove();
+    Time.timePassed += Time.secondsBetweenFrame;
+  }
+ 
+  setInterval(tick, Time.millisecondsBetweenFrames);
+
+</script>
+
+</body>
+</html>
